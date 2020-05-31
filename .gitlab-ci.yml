@@ -19,18 +19,28 @@ build_docker_image:
     variables:
       GIT_STRATEGY: none
     script:
-     - 
+     - docker info
+     - docker build -t demo .
+     - docker login -u ${docker-username} -p ${docker-password} ${docker-server}
+     - docker push emdoor/demo
     tags:  
      - 'maven' 
 
+build_docker_compose:
+    stage: build
+    script:
+      - sed -i s/docker-server/${dockerServer}/g ./docker-compose.yml
+      - sed -i s/docker-org/${dockerOrg}/g ./docker-compose.yml
+      - sed -i s/image-version/${BuildNumber}/g ./docker-compose.yml
 
 deploy_to_server:
     stage: deploy
     dependencies: 
-    - build_docker_image
+    - build_docker_compose
     variables:
       GIT_STRATEGY: none
     script:
+     - docker login -u ${docker-username} -p ${docker-password} ${docker-server}
      - docker-compose -f docker-compose.yml up -d
     tags:  
      - 'deploy'
