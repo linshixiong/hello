@@ -1,0 +1,7 @@
+version: '3'
+services:
+  sptring-boot-demo:
+    image: docker-server/docker-org/sptring-boot-demo:image-version
+    restart: always
+    ports:
+      - "8080:8080"

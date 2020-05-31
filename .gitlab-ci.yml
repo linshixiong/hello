@@ -1,0 +1,36 @@
+stages:
+  - build
+  - deploy
+
+ 
+build_jar:
+  stage: build
+  only: 
+  - master
+  script:
+  - mvn package
+  tags:  
+    - 'maven'
+ 
+build_docker_image:
+    stage: build
+    dependencies: 
+    - build_jar
+    variables:
+      GIT_STRATEGY: none
+    script:
+     - 
+    tags:  
+     - 'maven' 
+
+
+deploy_to_server:
+    stage: deploy
+    dependencies: 
+    - build_docker_image
+    variables:
+      GIT_STRATEGY: none
+    script:
+     - docker-compose -f docker-compose.yml up -d
+    tags:  
+     - 'deploy'
