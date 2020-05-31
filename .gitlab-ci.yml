@@ -34,6 +34,8 @@ build_docker_compose:
     artifacts:
       paths:
        - ./docker-compose.yml
+    tags:  
+      - 'maven' 
 
 deploy_to_server:
     stage: deploy
