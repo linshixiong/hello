@@ -32,8 +32,8 @@ build_docker_compose:
       - sed -i s/docker-org/emdoor/g ./docker-compose.yml
       - sed -i s/image-version/$CI_PIPELINE_IID/g ./docker-compose.yml
     artifacts:
-    paths:
-      - ./docker-compose.yml
+      paths:
+       - ./docker-compose.yml
 
 deploy_to_server:
     stage: deploy
