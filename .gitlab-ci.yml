@@ -14,8 +14,6 @@ build_jar:
  
 build_docker_image:
     stage: build
-    dependencies: 
-    - build_jar
     variables:
       GIT_STRATEGY: none
     script:
