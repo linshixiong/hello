@@ -18,18 +18,18 @@ build_docker_image:
       GIT_STRATEGY: none
     script:
      - docker info
-     - docker build -t demo .
      - docker login -u ${docker-username} -p ${docker-password} ${docker-server}
-     - docker push emdoor/demo
+     - docker build -t registry.gitlab.com/emdoor/hello:$CI_PIPELINE_IID .
+     - docker push registry.gitlab.com/emdoor/hello:$CI_PIPELINE_IID
     tags:  
      - 'maven' 
 
 build_docker_compose:
     stage: build
     script:
-      - sed -i s/docker-server/${dockerServer}/g ./docker-compose.yml
-      - sed -i s/docker-org/${dockerOrg}/g ./docker-compose.yml
-      - sed -i s/image-version/${BuildNumber}/g ./docker-compose.yml
+      - sed -i s/docker-server/registry.gitlab.com/g ./docker-compose.yml
+      - sed -i s/docker-org/emdoor/g ./docker-compose.yml
+      - sed -i s/image-version/$CI_PIPELINE_IID/g ./docker-compose.yml
 
 deploy_to_server:
     stage: deploy
