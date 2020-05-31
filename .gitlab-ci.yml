@@ -19,7 +19,7 @@ build_docker_image:
       GIT_STRATEGY: none
     script:
      - docker info
-     - docker login -u ${docker-username} -p ${docker-password} ${docker-server}
+     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD registry.gitlab.com
      - docker build -t registry.gitlab.com/emdoor/hello:$CI_PIPELINE_IID .
      - docker push registry.gitlab.com/emdoor/hello:$CI_PIPELINE_IID
     tags:  
@@ -42,7 +42,7 @@ deploy_to_server:
     variables:
       GIT_STRATEGY: none
     script:
-     - docker login -u ${docker-username} -p ${docker-password} ${docker-server}
+     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD registry.gitlab.com
      - docker-compose -f docker-compose.yml up -d
     tags:  
      - 'deploy'
