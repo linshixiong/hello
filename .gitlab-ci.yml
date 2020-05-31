@@ -1,5 +1,6 @@
 stages:
   - build
+  - docker
   - deploy
 
  
@@ -13,7 +14,7 @@ build_jar:
     - 'maven'
  
 build_docker_image:
-    stage: build
+    stage: docker
     variables:
       GIT_STRATEGY: none
     script:
@@ -25,11 +26,14 @@ build_docker_image:
      - 'maven' 
 
 build_docker_compose:
-    stage: build
+    stage: docker
     script:
       - sed -i s/docker-server/registry.gitlab.com/g ./docker-compose.yml
       - sed -i s/docker-org/emdoor/g ./docker-compose.yml
       - sed -i s/image-version/$CI_PIPELINE_IID/g ./docker-compose.yml
+    artifacts:
+    paths:
+      - ./docker-compose.yml
 
 deploy_to_server:
     stage: deploy
